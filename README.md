@@ -21,23 +21,23 @@
 
 1. /api/admin/createTable     (GET api for creating the table in database) 
 2. /admin/login          (POST api for login in to the admin panel)
-  ## REQUEST
+  #### REQUEST
   ``` 
     { "password" : "adminPassword" }
   ```
 
 3. /admin/getUsers       (GET api for fetching all the Refrees in the app)
 4. /admin/getLeads       (GET api for fetching all teh leads given by a refree )
-  # email -> email of refree
-  ## REQUEST 
+  ##### email -> email of refree
+  #### REQUEST 
   ```
     {
     "email" : "adarshprakashpandey@gmail.com"
     }
   ```
 5. /admin/reward         (PUT api for giving reward to a lead and hence to a refree)
-  # id -> id of lead, reward -> reward given to lead hence to refree
-  ## REQUEST
+  ##### id -> id of lead, reward -> reward given to lead hence to refree
+  #### REQUEST
   ```
     {
     "id" : "45", 
@@ -45,8 +45,8 @@
     }
   ```
 6. /admin/status         (PUT api for changing status of a lead)
-    # id -> id of lead, status -> updated status of lead
-    ## REQUEST
+    ##### id -> id of lead, status -> updated status of lead
+    #### REQUEST
     ```
       {
       "id" : "45", 
@@ -57,8 +57,8 @@
 
 ## APIs for refree's
 1. /ref/login  // POST api for logging in 
-  # email -> email of user, password -> password of user
-  ## REQUEST
+  ##### email -> email of user, password -> password of user
+  #### REQUEST
   ```
     { 
     "email" : "sankalppandey45@gmail.com", 
@@ -66,7 +66,7 @@
     }
   ```
   
-  ## RESPONSE 
+  #### RESPONSE 
   ```
     {
       "jwt" : "some jwt token",'
@@ -76,7 +76,7 @@
 
 2. /ref/signup  // POST api for signing in 
     
-    ## REQUEST
+    #### REQUEST
     ```
       { 
       "first_name" : "Anil", 
@@ -88,15 +88,15 @@
     ```
 3. /ref/leads   // GET api for fetching all the leads refered by the user
     
-    # jwt_token => jwt token assigned while login
-    ## REQUEST
+    ##### jwt_token => jwt token assigned while login
+    #### REQUEST
     ```
      authorization header : "jwt jwt_token "
     ```
 
 4. /ref/addLead // PUT api for adding a new lead
-    # jwt_token => jwt token assigned while login
-    ## REQUEST
+    ##### jwt_token => jwt token assigned while login
+    #### REQUEST
     ```
      authorization header : "jwt jwt_token "
      {
