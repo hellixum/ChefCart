@@ -16,8 +16,9 @@
 |ADMIN_PASS  | password for admin to access admin APIs (admin has privelege to see all the data , give rewards, adn change status etc)| 
 |PASS_KEY    | secret key for hashing the passwords| 
 
-## APIs for admin
+# API USAGE
 
+## APIs for admin(TOM)
 
 1. /api/admin/createTable     (api for creating the table in database) 
 2. /admin/login          (POST api for login in to the admin panel)
@@ -107,6 +108,16 @@
      }
     ```
 
+5. /ref/leadsBetween (GET api for fetching leads between two date)
+    ##### date_from => start date , date_to => ending date(must be large than date_from)
+    #### REQUEST
+    ```
+     authorization header : "jwt jwt_token ",
+     {
+        "date_from" : "YYYY-MM-DD",
+        "date_to" : "YYYY-MM-DD"
+     }
+    ```
 
   # TESTING 
   before testing change DB_NAME in env variables to your test database name 

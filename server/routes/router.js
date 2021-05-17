@@ -18,6 +18,7 @@ router.post('/ref/login', refreeCon.login);
 router.post('/ref/signup', refreeCon.signup);
 router.get('/ref/getLeads', auth.userAuth, refreeCon.getLeads);  
 router.put('/ref/addLead', auth.userAuth, refreeCon.addLead); 
+router.get('/ref/leadsBetween', auth.userAuth, refreeCon.leadsBetween); 
 
  
 module.exports = router; 

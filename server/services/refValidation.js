@@ -32,3 +32,13 @@ const addLeadSchema = Joi.object().keys({
 exports.addLeadValidate = async (data) => {
     return await addLeadSchema.validate(data); 
 }
+
+const leadsBetweenSchema = Joi.object().keys({
+    email: Joi.string().trim().email().required(),
+    date_from: Joi.date().iso(), 
+    date_to : Joi.date().iso().min(Joi.ref('date_from'))
+})
+
+exports.leadsBetweenValidate = async (data) => {
+    return await leadsBetweenSchema.validate(data); 
+}

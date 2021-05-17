@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt'); 
 const Joi = require('joi'); 
 const validation = require('../services/refValidation');  
+const { ValidationError } = require('joi');
 
 require('dotenv').config();
 
@@ -150,5 +151,54 @@ exports.addLead = async (req, res) => {
         // console.log(result); 
         res.status(200).send({message: `Lead added successfully by ref_email ${email}`});
     })
+
+}
+
+exports.leadsBetween = async (req, res) => {
+
+    const result = await validation.leadsBetweenValidate(req.bosy); 
+
+    if(result.error){
+        const error = result.error.details[0].message; 
+        res.status(400).json({"message": error });
+        return;
+    }
+
+    // const { email, date_from, date_to } = req.body; 
+    // let qry = `SELECT * FROM ${leads_table} WHERE ref_email LIKE '${email}' AND dateCreated BETWEEN ${date_from} AND ${date_to}`
+    // console.log(qry);
+
+    // pool.query(qry,(err, result) => {
+    //     if(err){
+    //         res.status(400).json({"message": err}); 
+    //         return ;
+    //     }
+
+    //     console.log(result);
+    //     res.status(200).json(result);
+    // })
+
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err; // not connected!!!!
+        // console.log('Connected as ID ' + connection.threadId); 
+
+        console.log(req.body);
+        const { email, date_from, date_to } = req.body; 
+        let qry = `SELECT * FROM ${leads_table} WHERE ref_email = ? AND dateCreated BETWEEN ? AND ?` 
+        // let qr = "SELECT * FROM `lead_table` WHERE `ref_email` LIKE 'sanu@gmail.com' AND `dateCreated` BETWEEN '2021-05-16' AND '2021-05-20'"
+        console.log(qry);
+        connection.query(qry,[email, date_from, date_to] ,(err, rows) => {
+            // When done with connection, release it
+            connection.release(); 
+            if(!err) {
+                console.log(rows);
+                res.status(200).send(rows); 
+            }else{
+                res.status(400).send({message: err}); 
+            }
+        })
+    })
+
 
 }
