@@ -157,28 +157,22 @@ exports.changeStatus = async (req, res) => {
 
 exports.createTable = (req, res) => {
     
-    pool.getConnection((err, connection) => {
-        if(err) throw err; // not connected!!!!
-        // console.log('Connected as ID ' + connection.threadId); 
+    const qry1 = 'CREATE TABLE `'+DB_name+'`.`'+leads_table+'` ( `id` INT NOT NULL AUTO_INCREMENT , `first_name` VARCHAR(45) NOT NULL , `last_name` VARCHAR(45) NOT NULL , `phone` VARCHAR(45) NOT NULL , `address` TEXT NOT NULL , `ref_email` VARCHAR(45) NOT NULL , `reward` INT NOT NULL , `status` VARCHAR(45) NOT NULL , `dateCreated` DATE NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;'; 
+    const qry2 = 'CREATE TABLE `'+DB_name+'`.`'+refree_table+'` ( `first_name` VARCHAR(45) NOT NULL , `last_name` VARCHAR(45) NOT NULL , `email` VARCHAR(45) NOT NULL , `phone` VARCHAR(45) NOT NULL , `password` TEXT NOT NULL , PRIMARY KEY (`email`)) ENGINE = InnoDB;';
+        
+    pool.query(qry1, (err, result) => {
+        if(err){
+            res.status(400).json({"message": err}); 
+            return; 
+        } 
 
-        const qry1 = 'CREATE TABLE `'+DB_name+'`.`'+leads_table+'` ( `id` INT NOT NULL AUTO_INCREMENT , `first_name` VARCHAR(45) NOT NULL , `last_name` VARCHAR(45) NOT NULL , `phone` VARCHAR(45) NOT NULL , `address` TEXT NOT NULL , `ref_email` VARCHAR(45) NOT NULL , `reward` INT NOT NULL , `status` VARCHAR(45) NOT NULL , `dateCreated` DATE NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;'; 
-        connection.query(qry1, (err, rows) => {
-            // When done with connection, release it
-            if(err) {
+        pool.query(qry2, (err, result) => {
+            if(err){
                 res.status(400).json({"message": err}); 
-                return;
-            }
-
-            const qry2 = 'CREATE TABLE `'+DB_name+'`.`'+refree_table+'` ( `first_name` VARCHAR(45) NOT NULL , `last_name` VARCHAR(45) NOT NULL , `email` VARCHAR(45) NOT NULL , `phone` VARCHAR(45) NOT NULL , `password` TEXT NOT NULL , PRIMARY KEY (`email`)) ENGINE = InnoDB;';
-            connection.query(qry2, (err, rows) => {
-                // When done with connection, release it
-                connection.release(); 
-                if(!err) {
-                    res.status(200).json({"message": `Both table Created`}); 
-                }else{
-                    res.status(400).json({"message": err}); 
-                }
-            })
+                return; 
+            } 
+            // console.log(result); 
+            res.status(200).json({"message": `Both table Created`}); 
         })
     })
 

@@ -106,3 +106,10 @@
         "address" : "kahi to rehta hai ye"
      }
     ```
+
+
+  # TESTING 
+  ```
+  npm test
+  ```
+you can also change table names in environment variables

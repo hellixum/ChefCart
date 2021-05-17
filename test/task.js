@@ -12,29 +12,21 @@ let refree_table = process.env.REFREE_TABLE;
 const pool = require('../server/database/connection')(); 
 
 
+
 describe('Testing Refree\'s APIs', () => {
 
-    // before("Should delete the entries" , (done) => {
-    //     console.log("yaha par to aa gaya hu");
+    before("Should delete the entries" , async () => {
+        await pool.query(`TRUNCATE ${leads_table}`);
+        await pool.query(`TRUNCATE ${refree_table}`);
+    })
 
-    //     pool.getConnection(`TRUNCATE ${leads_table}`, (err, connection) => {
-    //         if(err) throw err; // not connected!!!!
-    //         console.log('deleted one'); 
-
-    //         pool.getConnection(`TRUNCATE ${refree_table}`, done)
-            
-    //     })
-    //     console.log("khatram");
-    // })
-
-    // it("do something", () => {
-    //     console.log("hello"); 
-    // })
-
-    // before("Should delete the entries" , (done) => {
-    //     const qry = `TRUNCATE ${leads_table}`
-    //     pool.query(qry, done)
-    // })
+    it("should create table if not there", (done) => {
+        chai.request(server)
+            .get('/api/admin/createTable')
+            .end((err, res) => {
+                done();
+            })
+    })
 
     it("Should signup a new user", (done) => {
         chai.request(server)
