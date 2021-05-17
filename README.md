@@ -19,7 +19,7 @@
 ## APIs for admin
 
 
-1. /api/admin/createTable     (GET api for creating the table in database) 
+1. /api/admin/createTable     (api for creating the table in database) 
 2. /admin/login          (POST api for login in to the admin panel)
   #### REQUEST
   ``` 
@@ -109,6 +109,7 @@
 
 
   # TESTING 
+  before testing change DB_NAME in env variables to your test database name 
   ```
   npm test
   ```
