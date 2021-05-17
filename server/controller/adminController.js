@@ -25,14 +25,14 @@ exports.login = async (req, res) => {
 
     pool.getConnection((err, connection) => {
         if(err) throw err; // not connected!!!!
-        console.log('Connected as ID ' + connection.threadId); 
+        // console.log('Connected as ID ' + connection.threadId); 
 
-        console.log(password);
+        // console.log(password);
         if(password === process.env.ADMIN_PASS) {
             let token = jwt.sign({'email': "admin"}, privateKey, { algorithm : 'HS256'}); 
-            res.status(200).send({"jwt" : token , "meassage" : "Admin Logged in Successfully"});
+            res.status(200).json({"jwt" : token , "message" : "Admin Logged in Successfully"});
         }else{
-            res.status(400).send({message: err}); 
+            res.status(400).json({"message": err}); 
         }
     })
 }
@@ -40,11 +40,11 @@ exports.login = async (req, res) => {
 
 /// Sends all the refree's data to ADMIN; 
 exports.refreeData = (req, res) => {
-    console.log("admin asked for refree data"); 
+    // console.log("admin asked for refree data"); 
 
     pool.getConnection((err, connection) => {
         if(err) throw err; // not connected!!!!
-        console.log('Connected as ID ' + connection.threadId); 
+        // console.log('Connected as ID ' + connection.threadId); 
 
         const qry = `SELECT * FROM ${refree_table}`; 
         connection.query(qry, (err, rows) => {
@@ -62,9 +62,9 @@ exports.refreeData = (req, res) => {
                     }
                 });
 
-                res.json(data); 
+                res.status(200).json(data); 
             }else{
-                res.status(400).send({message: err}); 
+                res.status(400).json({"message": err}); 
             }
         })
     })
@@ -83,14 +83,14 @@ exports.getLeads = async (req, res) => {
 
     pool.getConnection((err, connection) => {
         if(err) throw err; // not connected!!!!
-        console.log('Connected as ID ' + connection.threadId); 
+        // console.log('Connected as ID ' + connection.threadId); 
 
         const qry = `SELECT * FROM ${leads_table} WHERE ref_email LIKE '${email}'`; 
         connection.query(qry, (err, rows) => {
             // When done with connection, release it
             connection.release(); 
             if(!err) {
-                console.log(rows);
+                // console.log(rows);
                 res.status(200).send(rows); 
             }else{
                 res.status(400).send({message: err}); 
@@ -111,7 +111,7 @@ exports.reward = async (req, res) => {
 
     pool.getConnection((err, connection) => {
         if(err) throw err; // not connected!!!!
-        console.log('Connected as ID ' + connection.threadId); 
+        // console.log('Connected as ID ' + connection.threadId); 
 
         const qry = `UPDATE ${leads_table} SET reward = ? WHERE ${leads_table}.id = ?`; 
         connection.query(qry, [reward, id], (err, rows) => {
@@ -140,7 +140,7 @@ exports.changeStatus = async (req, res) => {
 
     pool.getConnection((err, connection) => {
         if(err) throw err; // not connected!!!!
-        console.log('Connected as ID ' + connection.threadId); 
+        // console.log('Connected as ID ' + connection.threadId); 
 
         const qry = `UPDATE ${leads_table} SET status = ? WHERE ${leads_table}.id = ?`; 
         connection.query(qry, [status, id], (err, rows) => {
@@ -159,7 +159,7 @@ exports.createTable = (req, res) => {
     
     pool.getConnection((err, connection) => {
         if(err) throw err; // not connected!!!!
-        console.log('Connected as ID ' + connection.threadId); 
+        // console.log('Connected as ID ' + connection.threadId); 
 
         const qry1 = 'CREATE TABLE `'+DB_name+'`.`'+leads_table+'` ( `id` INT NOT NULL AUTO_INCREMENT , `first_name` VARCHAR(45) NOT NULL , `last_name` VARCHAR(45) NOT NULL , `phone` VARCHAR(45) NOT NULL , `address` TEXT NOT NULL , `ref_email` VARCHAR(45) NOT NULL , `reward` INT NOT NULL , `status` VARCHAR(45) NOT NULL , `dateCreated` DATE NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;'; 
         connection.query(qry1, (err, rows) => {

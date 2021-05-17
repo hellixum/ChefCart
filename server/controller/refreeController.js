@@ -29,7 +29,7 @@ exports.login = async (req, res) => {
 
     pool.getConnection((err, connection) => {
         if(err) throw err; // not connected!!!!
-        console.log('Connected as ID ' + connection.threadId);  
+        // console.log('Connected as ID ' + connection.threadId);  
 
         const qry = `SELECT * FROM ${refree_table} WHERE email LIKE ?`; 
         connection.query(qry, [email], async (err, rows) => {
@@ -38,12 +38,12 @@ exports.login = async (req, res) => {
             // console.log(rows); 
 
             if(err){
-                res.status(400).send({message: err}); 
+                res.status(400).json({"message" : err}); 
                 return; 
             }
 
             if(rows.length === 0){
-                res.status(404).json({"message" : "User not Found"});
+                res.status(400).json({"message" : "User not Found"});
                 return;
             }
 
@@ -53,9 +53,9 @@ exports.login = async (req, res) => {
 
             if(match) {
                 let token = jwt.sign({'email': rows[0].email}, privateKey, { algorithm : 'HS256'}); 
-                res.status(200).send({"jwt" : token , "message" : "Logged in Successfully"});
+                res.status(200).json({"jwt" : token , "message" : "Logged in Successfully"});
             }else{
-                res.status(400).send({message: "Password not matched"});
+                res.status(400).json({"message": "Password not matched"});
             }
         })
     })
@@ -102,9 +102,9 @@ exports.getLeads = (req, res) => {
     // send all the leads referred by the refree
     pool.getConnection((err, connection) => {
         if(err) throw err; // not connected!!!!
-        console.log('Connected as ID ' + connection.threadId); 
+        // console.log('Connected as ID ' + connection.threadId); 
 
-        console.log(req.body);
+        // console.log(req.body);
         const {email} = req.body; 
 
         const qry = `SELECT * FROM ${leads_table} WHERE ref_email LIKE '${email}'`; 
@@ -112,7 +112,7 @@ exports.getLeads = (req, res) => {
             // When done with connection, release it
             connection.release(); 
             if(!err) {
-                console.log(rows);
+                // console.log(rows);
                 res.status(200).send(rows); 
             }else{
                 res.status(400).send({message: err}); 
@@ -147,7 +147,7 @@ exports.addLead = async (req, res) => {
             res.status(400).json({"message": err}); 
             return; 
         } 
-        console.log(result); 
+        // console.log(result); 
         res.status(200).send({message: `Lead added successfully by ref_email ${email}`});
     })
 

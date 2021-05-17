@@ -7,13 +7,13 @@ exports.adminAuth = (req, res, next) => {
         let privateKey = process.env.PASS_KEY; 
 
         jwt.verify(token, privateKey, { algorithm : 'HS256'}, (err, decoded) => {
-            console.log(decoded);
+            // console.log(decoded);
             if(err || decoded["email"] !== "admin") {
                 res.status(500).json({ error: "Not Authorized as Admin"})
                 return;
             }
 
-            console.log("auth done"); 
+            // console.log("auth done"); 
             return next(); 
         })
 
@@ -24,11 +24,11 @@ exports.adminAuth = (req, res, next) => {
 
 exports.userAuth = (req, res, next) => {
     
-    console.log("header", req.headers.authorization);
+    // console.log("header", req.headers.authorization);
     if(typeof req.headers.authorization !== "undefined") {
         let token = req.headers.authorization.split(" ")[1]; 
         let privateKey = process.env.PASS_KEY; 
-        console.log(token);
+        // console.log(token);
 
         jwt.verify(token, privateKey, { algorithm : 'HS256'}, (err, decoded) => {
             if(err) {
@@ -36,7 +36,7 @@ exports.userAuth = (req, res, next) => {
                 return;
             }
 
-            console.log(decoded); 
+            // console.log(decoded); 
             req.body.email= decoded["email"];
 
             return next(); 

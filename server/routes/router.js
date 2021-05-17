@@ -16,7 +16,7 @@ router.put('/admin/status', auth.adminAuth, adminCon.changeStatus);
 // Refree's APIs
 router.post('/ref/login', refreeCon.login); 
 router.post('/ref/signup', refreeCon.signup);
-router.get('/ref/leads', auth.userAuth, refreeCon.getLeads);  
+router.get('/ref/getLeads', auth.userAuth, refreeCon.getLeads);  
 router.put('/ref/addLead', auth.userAuth, refreeCon.addLead); 
 
  
