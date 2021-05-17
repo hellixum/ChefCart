@@ -118,9 +118,9 @@ exports.reward = async (req, res) => {
             // When done with connection, release it
             connection.release(); 
             if(!err) {
-                res.status(200).send({message: `lead id: ${id} is given reward ${reward}`}); 
+                res.status(200).json({"message" : `lead id: ${id} is given reward ${reward}`}); 
             }else{
-                res.status(400).send({message: err}); 
+                res.status(400).json({"message" : err}); 
             }
         })
     })
@@ -147,9 +147,9 @@ exports.changeStatus = async (req, res) => {
             // When done with connection, release it
             connection.release(); 
             if(!err) {
-                res.status(200).send({message: `lead id: ${id} is given status ${status}`}); 
+                res.status(200).json({"message": `lead id: ${id} is given status ${status}`}); 
             }else{
-                res.status(400).send({message: err}); 
+                res.status(400).json({"message": err}); 
             }
         })
     })

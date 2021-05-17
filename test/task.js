@@ -198,13 +198,67 @@ describe('Testing Admin APIs ', () => {
                 // console.log(jwt_token);  
                 res.should.have.status(200); 
                 res.body.should.be.a('array');
-                if(res.body.length > 0) expect(res.body[0]).that.includes.all.keys(['first_name', 'last_name', 'email', 'phone']);
-            
+                expect(res.body[0]).that.includes.all.keys(['first_name', 'last_name', 'email', 'phone']);
+
             done(); 
             })
     })
 
+    let lead_id; 
+    it("Should get all lead", (done) => {
+        chai.request(server)
+            .get("/api/admin/getLeads")
+            .set('authorization', 'jwt '+jwt_token)
+            .send({
+                "email" : "sanu@gmail.com"
+            })
+            .end((err, res) => {
+                // console.log(jwt_token); 
+                // console.log(res.body); 
+                res.should.have.status(200); 
+                res.body.should.be.a('array');
+                expect(res.body[0]).that.includes.all.keys(['first_name', 'last_name', 'phone', 'ref_email', 'reward', 'status', 'id', 'dateCreated', 'address']);
+                
+            lead_id = res.body[0].id;
+            done(); 
+            })
+    })
 
+    it("Should give a reward to a lead", (done) => {
+        chai.request(server)
+            .put("/api/admin/reward")
+            .set('authorization', 'jwt '+jwt_token)
+            .send({
+                "id" : lead_id.toString(), 
+                "reward" : "35"
+            })
+            .end((err, res) => {
+                // console.log(jwt_token); 
+                // console.log(res.body); 
+                res.should.have.status(200); 
+                expect(res.body).that.includes.all.keys(['message']);
+                
+            done(); 
+            })
+    })
+
+    it("Should change the status of a lead", (done) => {
+        chai.request(server)
+            .put("/api/admin/status")
+            .set('authorization', 'jwt '+jwt_token)
+            .send({
+                "id" : lead_id.toString(), 
+                "status" : "Junk"
+            })
+            .end((err, res) => {
+                // console.log(jwt_token); 
+                // console.log(res.body); 
+                res.should.have.status(200); 
+                expect(res.body).that.includes.all.keys(['message']);
+                
+            done(); 
+            })
+    })
 
 })
 

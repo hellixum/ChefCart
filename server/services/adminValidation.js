@@ -9,7 +9,7 @@ exports.loginValidate = async (data) => {
 }
 
 const getLeadsSchema = Joi.object().keys({
-    id : Joi.string().required()
+    email: Joi.string().trim().email().required(),
 }); 
 
 exports.getLeadsValidate = async (data) => {
@@ -26,6 +26,7 @@ exports.rewardValidate = async (data) => {
 }
 
 const changeStatusSchema = Joi.object().keys({
+    id : Joi.string().required(),
     status: Joi.string().required().valid('New', 'In pipeline', 'Successful', 'Junk')
 })
 
