@@ -1,1 +1,12 @@
-// there will be code for orm 
+const mysql = require('mysql'); 
+
+module.exports = DBConnect = () => {
+    // Connection Pool
+    return mysql.createPool({
+        host            : process.env.DB_HOST,
+        user            : process.env.DB_USER,
+        password        : process.env.DB_PASS,
+        database        : process.env.DB_NAME
+    });
+    
+}
