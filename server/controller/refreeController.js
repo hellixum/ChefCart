@@ -95,7 +95,7 @@ exports.getLeads = async (req, res) => {
     console.log(email); 
 
     try {
-        const user = await leads.findAll({where: { ref_email : email}}); 
+        const user = await leads.findAll({attributes: ['first_name', 'last_name', 'phone', 'address'], where: { ref_email : email}}); 
 
         if(!user){
             res.status(500).json({"message" : "User not Found"});
