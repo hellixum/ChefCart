@@ -4,8 +4,7 @@ const Joi = require('joi');
 const validation = require('../services/adminValidation'); 
 
 // Connection pool
-const pool = require('../database/connection')(); 
-
+ 
 let leads_table = process.env.LEADS_TABLE; 
 let refree_table = process.env.REFREE_TABLE; 
 let DB_name = process.env.DB_NAME;
