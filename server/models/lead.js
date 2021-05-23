@@ -45,7 +45,11 @@ module.exports = (sequelize, DataTypes) => {
     reward: {
       type: DataTypes.INTEGER, 
       allowNull: false
-    }
+    },
+    status: {
+      type: DataTypes.STRING(10), 
+      allowNull: false
+    },
   }, {
     sequelize,
     modelName: 'leads',

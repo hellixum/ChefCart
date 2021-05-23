@@ -84,7 +84,7 @@ exports.signup = async (req, res) => {
         res.status(200).json({'message': `User ${first_name} ${last_name} added successfully`})
     }catch(err) {
         // console.log(err); 
-        res.status(500).json({err, 'message': "email already registered"}); 
+        res.status(500).json({'message': "email already registered"}); 
     }
 
 }
@@ -146,37 +146,42 @@ exports.addLead = async (req, res) => {
 
 }
 
-// exports.leadsBetween = async (req, res) => {
+exports.leadsBetween = async (req, res) => {
 
-//     const result = await validation.leadsBetweenValidate(req.bosy); 
+    const result = await validation.leadsBetweenValidate(req.bosy); 
 
-//     if(result.error){
-//         const error = result.error.details[0].message; 
-//         res.status(400).json({"message": error });
-//         return;
-//     }
+    if(result.error){
+        const error = result.error.details[0].message; 
+        res.status(400).json({"message": error });
+        return;
+    }
 
+    let { email, date_from, date_to } = req.body; 
+    date_from += " 00:00:00"; 
+    date_to += " 00:00:00"; 
 
-//     pool.getConnection((err, connection) => {
-//         if(err) throw err; // not connected!!!!
-//         // console.log('Connected as ID ' + connection.threadId); 
-
-//         console.log(req.body);
-//         const { email, date_from, date_to } = req.body; 
-//         let qry = `SELECT * FROM ${leads_table} WHERE ref_email = ? AND dateCreated BETWEEN ? AND ?` 
-//         // let qr = "SELECT * FROM `lead_table` WHERE `ref_email` LIKE 'sanu@gmail.com' AND `dateCreated` BETWEEN '2021-05-16' AND '2021-05-20'"
-//         console.log(qry);
-//         connection.query(qry,[email, date_from, date_to] ,(err, rows) => {
-//             // When done with connection, release it
-//             connection.release(); 
-//             if(!err) {
-//                 console.log(rows);
-//                 res.status(200).send(rows); 
-//             }else{
-//                 res.status(400).send({message: err}); 
-//             }
-//         })
-//     })
+    console.log(date_from); 
+    console.log(date_to);
 
 
-// }
+    const lead = await leads.findAll({
+        attributes: ['first_name', 'last_name', 'phone', 'address'],
+        where: {
+            ref_email: email, 
+            createdAt : {
+                "$between": [date_from, date_to]
+            }
+        }
+    })
+
+    res.send(lead); 
+
+    // if(!err) {
+    //     console.log(rows);
+    //     res.status(200).send(rows); 
+    // }else{
+    //     res.status(400).send({message: err}); 
+    // }
+
+
+}

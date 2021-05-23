@@ -9,7 +9,7 @@ exports.adminAuth = (req, res, next) => {
         jwt.verify(token, privateKey, { algorithm : 'HS256'}, (err, decoded) => {
             // console.log(decoded);
             if(err || decoded["email"] !== "admin") {
-                res.status(500).json({ error: "Not Authorized as Admin"})
+                res.status(500).json({ error: "Not an Admin"})
                 return;
             }
 
