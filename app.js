@@ -21,5 +21,5 @@ app.use('*', (req, res) => res.status(404).json({"message" : "Request not found"
 module.exports = app.listen(process.env.PORT, async () => {
     console.log(`Server started at http://localhost:${process.env.PORT}`)
     await sequelize.authenticate()
-    console.log("Database connected")
+    // console.log("Database connected")
 }); 

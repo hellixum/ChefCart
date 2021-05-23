@@ -24,7 +24,7 @@ exports.login = async (req, res) => {
         let token = jwt.sign({'email': "admin"}, privateKey, { algorithm : 'HS256'}); 
         res.status(200).json({"jwt" : token , "message" : "Admin Logged in Successfully"});
     }else{
-        res.status(400).json({"message": err}); 
+        res.status(400).json({"message": "wrong password"}); 
     }
 }
 
@@ -82,7 +82,6 @@ exports.reward = async (req, res) => {
 
     const {id , reward} = req.body; 
 
-    console.log(id, reward); 
     try{
         const user = await leads.update(
             { reward }, 

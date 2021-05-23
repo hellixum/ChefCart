@@ -31,14 +31,8 @@ exports.login = async (req, res) => {
             return;
         }
 
-
-        // console.log('/n /n /n /n /n User is below')
-        // console.log(user.dataValues); 
-        // res.send(user); 
-        // return; 
         const real_pass = user.dataValues.password; 
         const match = await bcrypt.compare(password, real_pass); 
-                
 
         if(match) {
             let token = jwt.sign({'email': user.dataValues.email}, privateKey, { algorithm : 'HS256'}); 
@@ -81,6 +75,7 @@ exports.signup = async (req, res) => {
             password: hashedPassword
         }); 
 
+        // console.log(user);
         res.status(200).json({'message': `User ${first_name} ${last_name} added successfully`})
     }catch(err) {
         // console.log(err); 
@@ -91,8 +86,7 @@ exports.signup = async (req, res) => {
 
 exports.getLeads = async (req, res) => {
     // send all the leads referred by the refrees
-    const {email} = req.body; 
-    console.log(email); 
+    const {email} = req.body;
 
     try {
         const user = await leads.findAll({attributes: ['first_name', 'last_name', 'phone', 'address'], where: { ref_email : email}}); 
